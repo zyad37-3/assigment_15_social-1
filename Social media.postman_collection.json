@@ -1,0 +1,97 @@
+{
+  "info": {
+    "_postman_id": "be43f6cc-d17b-4a67-9be4-e1e964486a11",
+    "name": "Social media",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52259329",
+    "_collection_link": "https://go.postman.co/collection/52259329-be43f6cc-d17b-4a67-9be4-e1e964486a11?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "authentication",
+      "item": [
+        {
+          "name": "/auth/sighup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userName\":\"zyad ahmed\",\r\n    \"email\":\"zyad.7mdoda27@gmail.com\",\r\n    \"password\":\"12345\",\r\n    \"phone\":\"+201012345678\",\r\n    \r\n    \"confirmpassword\":\"12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/sighup",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "sighup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "confirm_Email Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"zyad.7moda27@gmail.com\",\r\n    \"otp\":\"622678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/confirm_Email",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "confirm_Email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resend_Confirm_Email Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"zyad.7moda27@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/resend_Confirm_Email",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "resend_Confirm_Email"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
