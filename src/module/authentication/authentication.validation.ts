@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { LangEnum } from "../../common/enum"
-import { generalValidationFields } from "../../common/utils/validation.js"
+import { generalValidationFields } from "../../common/utils"
 export const login = (lang:LangEnum) => {
     return z.strictObject({
         email: generalValidationFields.email(lang),

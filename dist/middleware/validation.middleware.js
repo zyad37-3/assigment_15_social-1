@@ -10,6 +10,7 @@ const validation = (schema) => {
             body: req.body,
             params: req.params,
             query: req.query,
+            files: req.files
         });
         if (!validation.success) {
             throw new expiation_1.BadRequestException("validation error", { issues: validation.error.issues });

@@ -13,8 +13,10 @@ export interface IUser {
     confirmEmail?: string;
     image?: string;
     coverImage?: string[];
-    changeCredentialsTime?: string
-    createdAt?: string
-    updatedAt?: string
+    changeCredentialsTime?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
+    changeStatusAt?:Date;
+    status:number
 
 }

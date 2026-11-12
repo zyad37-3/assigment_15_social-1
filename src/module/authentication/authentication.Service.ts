@@ -1,20 +1,24 @@
 import { ConflictException, NotFoundException, ToManyRequestException } from "../../common/expiation/domain.Exception";
-import { ConfirmEmailDto, ResendConfirmEmailDto, SighupDto } from "./dto/authentication.dto";
+import { ConfirmEmailDto, LoginDto, ResendConfirmEmailDto, SighupDto } from "./dto/authentication.dto";
 
 import { UserRepository } from "../../common/repository";
-import { cashService, CashService } from "../../common/services";
-import { encrypt, hash } from "../../common/security";
+import { cashService, CashService, tokenService, TokenService } from "../../common/services";
+import { decrypt, encrypt, hash } from "../../common/security";
 import { emailEvent, userEmailKey, userEmailTrialsKey } from "../../common/utils/email";
 import { EmailSubjectEnum } from "../../common/enum";
 import { createOtp } from "../../common/utils";
 import { compare } from "bcrypt";
 import { IUser } from "../../common/interface";
+import { ILoginResponse } from "./entities/authentication.entities";
+
 
 export class Authentication {
     private userRepository: UserRepository
     private cashService: CashService
+    private tokenService: TokenService
     constructor() {
         this.cashService = cashService
+        this.tokenService =  tokenService
         this.userRepository = new UserRepository()
     }
 
@@ -57,9 +61,9 @@ export class Authentication {
         const account = await this.userRepository.createOne({
             data: {
                 email,
-                password: await hash(password),
+                password,
                 userName,
-                phone: await encrypt(phone)
+                phone
             },
         })
 
@@ -95,6 +99,38 @@ export class Authentication {
         return;
 
     }
+     async login({ email, password }:LoginDto, issuer:string):Promise<ILoginResponse> {
+    const user = await this.userRepository.findOne({ filter: { email, confirmEmail: { $exists: true } } })
+
+    if (!user) {
+        throw new NotFoundException('user is not found' )
+    }
+    //عدد محاولات ادخال كلمة السر
+    const existTtl  = await this.cashService.ttl({ key: userEmailTrialsKey({ email, subject: EmailSubjectEnum.FORGOT_PASSWORD }) })
+    if (existTtl  > 0) {
+        throw new ToManyRequestException( `Try again after ${existTtl} seconds` )
+    }
+    const match = await compare(password, user.password)
+
+    if (!match) {
+
+        const currentTrials = await this.cashService.incrBy({ key: userEmailTrialsKey({ email, subject: EmailSubjectEnum.FORGOT_PASSWORD }) })
+
+        if (currentTrials >= 5) {
+            await this.cashService.expire({ key: userEmailTrialsKey({ email, subject: EmailSubjectEnum.FORGOT_PASSWORD }), ttl: 120 })
+            throw new ToManyRequestException( "Too many failed attempts. Try again after 2 minutes.");
+        }
+        throw new NotFoundException( 'user is not found' )
+
+    }
+
+
+    user.phone = await decrypt(user.phone as string)
+    await this.cashService.del({ key: userEmailTrialsKey({ email, subject: EmailSubjectEnum.FORGOT_PASSWORD }) })
+    return await this.tokenService.createLoginCredentials({ user, issuer })
+
+}
+
 }
 
 //singleton Pattern

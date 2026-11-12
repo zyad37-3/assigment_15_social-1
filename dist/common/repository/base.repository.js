@@ -72,6 +72,9 @@ class DataBaseRepository {
         });
         return { count, pages, currentPage: page, limit, docs };
     }
+    async insertMany({ data }) {
+        return await this.model.insertMany(data);
+    }
     async updateOne({ filter = {}, update, options }) {
         return await this.model.updateOne(filter, update, options);
     }

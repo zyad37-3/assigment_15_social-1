@@ -11,8 +11,12 @@ const connection_1 = require("./db/connection");
 const app = (0, express_1.default)();
 (0, connection_1.bootstrapDB)(app, config_1.PORT);
 app.use(express_1.default.json());
+app.use("/assets", express_1.default.static("./assets"));
 app.all("/", async (req, res, next) => {
     return res.status(200).json({ message: "hello world" });
 });
 app.use("/auth", module_1.authenticationController);
+app.use("/user", module_1.userController);
+app.use("/post", module_1.postController);
+app.use("/comment", module_1.commentController);
 app.use(middleware_1.globalErrorHandling);

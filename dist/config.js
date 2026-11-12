@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.REFRESH_USER_TOKEN_SIGNATURE = exports.REFRESH_TOKEN_EXPIRES_IN = exports.REFRESH_ADMIN_TOKEN_SIGNATURE = exports.ACCESS_USER_TOKEN_SIGNATURE = exports.ACCESS_TOKEN_EXPIRES_IN = exports.ACCESS_ADMIN_TOKEN_SIGNATURE = exports.IV_LENGTH = exports.ENC_KEY = exports.APPLICATION_NAME = exports.APP_PASSWORD = exports.APP_EMAIL = exports.REDIS_URI = exports.DB_URI = exports.ORIGIN = exports.PORT = exports.NODE_ENV = void 0;
+exports.AWS_ACCESS_SECRET_KEY = exports.AWS_ACCESS_KEY_ID = exports.AWS_BUCKET_NAME = exports.AWS_REGION = exports.REFRESH_USER_TOKEN_SIGNATURE = exports.REFRESH_TOKEN_EXPIRES_IN = exports.REFRESH_ADMIN_TOKEN_SIGNATURE = exports.ACCESS_USER_TOKEN_SIGNATURE = exports.ACCESS_TOKEN_EXPIRES_IN = exports.ACCESS_ADMIN_TOKEN_SIGNATURE = exports.IV_LENGTH = exports.ENC_KEY = exports.APPLICATION_NAME = exports.APP_PASSWORD = exports.APP_EMAIL = exports.REDIS_URI = exports.DB_URI = exports.ORIGIN = exports.PORT = exports.NODE_ENV = void 0;
 const node_path_1 = require("node:path");
 const dotenv_1 = require("dotenv");
 exports.NODE_ENV = process.env.NODE_ENV ?? 'development';
@@ -20,3 +20,7 @@ exports.ACCESS_USER_TOKEN_SIGNATURE = process.env.ACCESS_USER_TOKEN_SIGNATURE;
 exports.REFRESH_ADMIN_TOKEN_SIGNATURE = process.env.REFRESH_ADMIN_TOKEN_SIGNATURE;
 exports.REFRESH_TOKEN_EXPIRES_IN = parseInt(process.env.REFRESH_TOKEN_EXPIRES_IN ?? "31536000");
 exports.REFRESH_USER_TOKEN_SIGNATURE = process.env.REFRESH_USER_TOKEN_SIGNATURE;
+exports.AWS_REGION = process.env.AWS_REGION;
+exports.AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+exports.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+exports.AWS_ACCESS_SECRET_KEY = process.env.AWS_ACCESS_SECRET_KEY;

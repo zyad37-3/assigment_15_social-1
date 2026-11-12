@@ -46,7 +46,7 @@ export class CashService {
         return await this.set({ key, value, ttl })
     }
 
-    async del({ key }: { key: string|string[] }) {
+    async del({ key }: { key: string | string[] }) {
         return await this.client.del(key)
 
     }
@@ -63,14 +63,14 @@ export class CashService {
         return await this.client.ttl(key)
 
     }
-    async expire({ key, ttl } : { key:string, ttl:number }) {
+    async expire({ key, ttl }: { key: string, ttl: number }) {
         return await this.client.expire(key, ttl)
 
     }
-    async incrBy({ key, value = 1 }:{  key:string, value? :number }) {
+    async incrBy({ key, value = 1 }: { key: string, value?: number }) {
         return await this.client.incrBy(key, value)
 
     }
 
 }
-export  const cashService= new CashService()
+export const cashService = new CashService()

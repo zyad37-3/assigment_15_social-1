@@ -1,5 +1,7 @@
-import mongoose, { DeleteResult, FlattenMaps, MongooseUpdateQueryOptions, PopulateOptions, ProjectionType, QueryOptions, 
-     UpdateQuery, UpdateWithAggregationPipeline, UpdateWriteOpResult } from "mongoose";
+import mongoose, {
+    DeleteResult, FlattenMaps, MongooseUpdateQueryOptions, PopulateOptions, ProjectionType, QueryOptions,
+    UpdateQuery, UpdateWithAggregationPipeline, UpdateWriteOpResult
+} from "mongoose";
 import { HydratedDocument, QueryFilter } from "mongoose";
 import { AnyKeys, Model, CreateOptions } from "mongoose";
 import { IPaginate } from "../interface/paginate.interface";
@@ -39,14 +41,14 @@ export abstract class DataBaseRepository<TRawDocType> {
         projection?: ProjectionType<TRawDocType> | null | undefined,
         options: QueryOptions<TRawDocType> & { lean: false } | null | undefined
     }): Promise<HydratedDocument<TRawDocType> | undefined | null>
-        async findOne({
+    async findOne({
         filter,
         projection,
         options
     }: {
         filter: QueryFilter<TRawDocType>,
         projection?: ProjectionType<TRawDocType> | null | undefined,
-        options?: QueryOptions<TRawDocType>  | null | undefined
+        options?: QueryOptions<TRawDocType> | null | undefined
     }): Promise<HydratedDocument<TRawDocType> | undefined | null>
     async findOne({
         filter = {},
@@ -77,8 +79,8 @@ export abstract class DataBaseRepository<TRawDocType> {
     }: {
         id: mongoose.Types.ObjectId,
         projection?: ProjectionType<TRawDocType> | null | undefined,
-        options?: QueryOptions<TRawDocType> & { lean: true } | null | undefined
-    }): Promise<FlattenMaps<TRawDocType> | undefined | null>
+        options: QueryOptions<TRawDocType> & { lean: true }
+    }): Promise<FlattenMaps<TRawDocType> | null>
     async findById({
         id,
         projection,
@@ -86,8 +88,8 @@ export abstract class DataBaseRepository<TRawDocType> {
     }: {
         id: mongoose.Types.ObjectId,
         projection?: ProjectionType<TRawDocType> | null | undefined,
-        options?: QueryOptions<TRawDocType> & { lean: false } | null | undefined
-    }): Promise<HydratedDocument<TRawDocType> | undefined | null>
+        options?: QueryOptions<TRawDocType> & { lean?: false } | null
+    }): Promise<HydratedDocument<TRawDocType> | null>
     async findById({
         id,
         projection,
@@ -96,7 +98,7 @@ export abstract class DataBaseRepository<TRawDocType> {
         id: mongoose.Types.ObjectId,
         projection?: ProjectionType<TRawDocType> | null | undefined,
         options?: QueryOptions<TRawDocType> & { lean?: boolean } | null | undefined
-    }): Promise<HydratedDocument<TRawDocType> | FlattenMaps<TRawDocType> | undefined | null> {
+    }): Promise<HydratedDocument<TRawDocType> | FlattenMaps<TRawDocType> | null> {
 
         const doc = this.model.findById(id, projection)
         if (options?.populate) {
@@ -109,7 +111,7 @@ export abstract class DataBaseRepository<TRawDocType> {
 
     }
     //FIND
-    async find({
+    async   find({
         filter,
         options,
     }: {
@@ -175,7 +177,10 @@ export abstract class DataBaseRepository<TRawDocType> {
         })
         return { count, pages, currentPage: page, limit, docs }
     }
-
+    //insertMany
+    async insertMany({data}:{data: AnyKeys<TRawDocType>[]}) {
+        return await this.model.insertMany( data )
+    }
     //update
     async updateOne({
         filter = {},

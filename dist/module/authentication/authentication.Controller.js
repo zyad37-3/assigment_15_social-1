@@ -41,6 +41,7 @@ const authentication_Service_1 = __importDefault(require("./authentication.Servi
 const middleware_1 = require("../../middleware");
 const validation_middleware_1 = require("../../middleware/validation.middleware");
 const validator = __importStar(require("./authentication.validation"));
+const utils_1 = require("../../common/utils");
 const router = (0, express_1.Router)();
 router.post("/sighup", (0, validation_middleware_1.validation)(validator.signupSchema), (0, middleware_1.responseFormatter)(async (req, res, next) => {
     const data = await authentication_Service_1.default.signup(req.validate.body);
@@ -51,5 +52,9 @@ router.post("/confirm_Email", (0, validation_middleware_1.validation)(validator.
 }));
 router.post("/resend_Confirm_Email", (0, validation_middleware_1.validation)(validator.resendConfirmEmailSchema), (0, middleware_1.responseFormatter)(async (req, res, next) => {
     await authentication_Service_1.default.resendConfirmEmail(req.validate.body);
+}));
+router.post("/login", (0, validation_middleware_1.validation)(validator.loginSchema), (0, middleware_1.responseFormatter)(async (req, res, next) => {
+    const data = await authentication_Service_1.default.login(req.validate.body, (0, utils_1.getIssuer)(req));
+    return { status: 200, data };
 }));
 exports.default = router;

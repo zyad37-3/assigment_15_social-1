@@ -36,11 +36,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.resetForgotPasswordSchema = exports.resendConfirmEmailSchema = exports.confirmEmailSchema = exports.signupSchema = exports.loginSchema = exports.login = void 0;
 const z = __importStar(require("zod"));
 const enum_1 = require("../../common/enum");
-const validation_js_1 = require("../../common/utils/validation.js");
+const utils_1 = require("../../common/utils");
 const login = (lang) => {
     return z.strictObject({
-        email: validation_js_1.generalValidationFields.email(lang),
-        password: validation_js_1.generalValidationFields.password(lang)
+        email: utils_1.generalValidationFields.email(lang),
+        password: utils_1.generalValidationFields.password(lang)
     });
 };
 exports.login = login;
@@ -53,10 +53,10 @@ exports.loginSchema = loginSchema;
 const signupSchema = (lang) => {
     return z.object({
         body: (0, exports.login)(lang).safeExtend({
-            userName: validation_js_1.generalValidationFields.userName(lang),
-            phone: validation_js_1.generalValidationFields.phone(lang),
-            confirmpassword: validation_js_1.generalValidationFields.password(lang).optional(),
-            role: validation_js_1.generalValidationFields.role(lang).optional()
+            userName: utils_1.generalValidationFields.userName(lang),
+            phone: utils_1.generalValidationFields.phone(lang),
+            confirmpassword: utils_1.generalValidationFields.password(lang).optional(),
+            role: utils_1.generalValidationFields.role(lang).optional()
         }).refine((value) => value.password === value.confirmpassword, {
             error: lang === enum_1.LangEnum.EN ? "Passwords don't match" : "كلمتا المرور غير متطابقتين",
             path: ["confirmpassword"],
@@ -67,8 +67,8 @@ exports.signupSchema = signupSchema;
 const confirmEmailSchema = (lang) => {
     return z.object({
         body: z.strictObject({
-            email: validation_js_1.generalValidationFields.email(lang),
-            otp: validation_js_1.generalValidationFields.otp(lang)
+            email: utils_1.generalValidationFields.email(lang),
+            otp: utils_1.generalValidationFields.otp(lang)
         }),
     });
 };
@@ -76,7 +76,7 @@ exports.confirmEmailSchema = confirmEmailSchema;
 const resendConfirmEmailSchema = (lang) => {
     return z.object({
         body: z.strictObject({
-            email: validation_js_1.generalValidationFields.email(lang),
+            email: utils_1.generalValidationFields.email(lang),
         }),
     });
 };
@@ -84,10 +84,10 @@ exports.resendConfirmEmailSchema = resendConfirmEmailSchema;
 const resetForgotPasswordSchema = (lang) => {
     return z.object({
         body: z.strictObject({
-            email: validation_js_1.generalValidationFields.email(lang),
-            otp: validation_js_1.generalValidationFields.otp(lang),
-            password: validation_js_1.generalValidationFields.password(lang),
-            confirmpassword: validation_js_1.generalValidationFields.password(lang),
+            email: utils_1.generalValidationFields.email(lang),
+            otp: utils_1.generalValidationFields.otp(lang),
+            password: utils_1.generalValidationFields.password(lang),
+            confirmpassword: utils_1.generalValidationFields.password(lang),
         }).refine((value) => value.password === value.confirmpassword, {
             error: lang === enum_1.LangEnum.EN ? "Passwords don't match" : "كلمتا المرور غير متطابقتين",
             path: ["confirmpassword"],

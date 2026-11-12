@@ -17,7 +17,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userName\":\"zyad ahmed\",\r\n    \"email\":\"zyad.7mdoda27@gmail.com\",\r\n    \"password\":\"12345\",\r\n    \"phone\":\"+201012345678\",\r\n    \r\n    \"confirmpassword\":\"12345\"\r\n}",
+              "raw": "{\r\n    \"userName\":\"zyad ahmed\",\r\n    \"email\":\"zyad.7moda27@gmail.com\",\r\n    \"password\":\"12345\",\r\n    \"phone\":\"+201012345678\",\r\n    \r\n    \"confirmpassword\":\"12345\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -44,7 +44,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\":\"zyad.7moda27@gmail.com\",\r\n    \"otp\":\"622678\"\r\n}",
+              "raw": "{\r\n    \"email\":\"zyad.7moda27@gmail.com\",\r\n    \"otp\":\"997632\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -86,6 +86,557 @@
               "path": [
                 "auth",
                 "resend_Confirm_Email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let response = pm.response.json()\r\npm.environment.set(\"BEARER_ACCESS_TOKEN\", response.data.access_token)\r\npm.environment.set(\"BEARER_REFRESH_TOKEN\", response.data.refresh_token)\r\nconsole.log(\"token save to environment variable:access_token & refresh_token\")\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-forwarded-for",
+                "value": "41.45.210.10",
+                "description": "EG"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"zyad.7moda27@gmail.com\",\r\n    \"password\":\"12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/user/profile",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"fristName\":\"azlsa sss\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/user/profile/update",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "profile",
+                "update"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "rotate_token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let response = pm.response.json()\r\npm.environment.set(\"BEARER_ACCESS_TOKEN\", response.data.access_token)\r\npm.environment.set(\"BEARER_REFRESH_TOKEN\", response.data.refresh_token)\r\nconsole.log(\"token save to environment variable:access_token & refresh_token\")\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_REFRESH_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/user/rotate_token",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "rotate_token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"action\":0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/user/logout",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile_image",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attachment",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/xps/Downloads/97c99772cd20a38748a285c115439e469454a3e0.jpg"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/user/profile_image",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "profile_image"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "post",
+      "item": [
+        {
+          "name": "creatPost",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attachment",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/xps/Downloads/image.png",
+                    "/C:/Users/xps/Downloads/image.png"
+                  ],
+                  "disabled": true
+                },
+                {
+                  "key": "content",
+                  "value": "اثممخ",
+                  "type": "text"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/post",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "post"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all post",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/post/getPosts",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "post",
+                "getPosts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getPostsById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/post/{{postId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "post",
+                "{{postId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/post/{{postId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "post",
+                "{{postId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update post",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attachment",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "content",
+                  "value": "hslkdjflaskjdlfjksjdjslkdjflkjsaldfkj;laskdjf;lakjsdf;lakjdsf;",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/post/{{postId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "post",
+                "{{postId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "comment",
+      "item": [
+        {
+          "name": "creatcomment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attachment",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/xps/Downloads/image.png",
+                    "/C:/Users/xps/Downloads/image.png"
+                  ],
+                  "disabled": true
+                },
+                {
+                  "key": "content",
+                  "value": "ينتنتسيب\n",
+                  "type": "text"
+                },
+                {
+                  "key": "postId",
+                  "value": "6af4f24008a8da897f49063d",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/comment",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "comment"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all post",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/comment/getPosts/{{postId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "comment",
+                "getPosts",
+                "{{postId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCommentById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/comment/{{commentId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "comment",
+                "{{commentId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/comment/{{commentId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "comment",
+                "{{commentId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update comment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{BEARER_ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attachment",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true
+                },
+                {
+                  "key": "content",
+                  "value": "hslkdjflaskjdlfjksjdjslkdjflkjsaldfkj;laskdjf;lakjsdf;lakjdsf;",
+                  "type": "text"
+                },
+                {
+                  "key": "postId",
+                  "value": "6af4f24008a8da897f49063d",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/comment/{{commentId}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "comment",
+                "{{commentId}}"
               ]
             }
           },

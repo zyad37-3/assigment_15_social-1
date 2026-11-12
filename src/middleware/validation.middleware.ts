@@ -16,8 +16,7 @@ export const validation = (schema: ValidationSchemaType) => {
             body: req.body,
             params: req.params,
             query: req.query,
-
-
+            files: req.files
         })
 
 

@@ -12,8 +12,10 @@ const bcrypt_1 = require("bcrypt");
 class Authentication {
     userRepository;
     cashService;
+    tokenService;
     constructor() {
         this.cashService = services_1.cashService;
+        this.tokenService = services_1.tokenService;
         this.userRepository = new repository_1.UserRepository();
     }
     async sendEmailOtp({ mess, email, subject, expiresIn = 120, maxTrials = 3, blockInSeconds = 300 }) {
@@ -46,9 +48,9 @@ class Authentication {
         const account = await this.userRepository.createOne({
             data: {
                 email,
-                password: await (0, security_1.hash)(password),
+                password,
                 userName,
-                phone: await (0, security_1.encrypt)(phone)
+                phone
             },
         });
         await this.sendEmailOtp({ mess: "Confirm your email", email, subject: enum_1.EmailSubjectEnum.CONFIRM_EMAIL });
@@ -75,6 +77,28 @@ class Authentication {
         }
         await this.sendEmailOtp({ email, subject: enum_1.EmailSubjectEnum.CONFIRM_EMAIL });
         return;
+    }
+    async login({ email, password }, issuer) {
+        const user = await this.userRepository.findOne({ filter: { email, confirmEmail: { $exists: true } } });
+        if (!user) {
+            throw new domain_Exception_1.NotFoundException('user is not found');
+        }
+        const existTtl = await this.cashService.ttl({ key: (0, email_1.userEmailTrialsKey)({ email, subject: enum_1.EmailSubjectEnum.FORGOT_PASSWORD }) });
+        if (existTtl > 0) {
+            throw new domain_Exception_1.ToManyRequestException(`Try again after ${existTtl} seconds`);
+        }
+        const match = await (0, bcrypt_1.compare)(password, user.password);
+        if (!match) {
+            const currentTrials = await this.cashService.incrBy({ key: (0, email_1.userEmailTrialsKey)({ email, subject: enum_1.EmailSubjectEnum.FORGOT_PASSWORD }) });
+            if (currentTrials >= 5) {
+                await this.cashService.expire({ key: (0, email_1.userEmailTrialsKey)({ email, subject: enum_1.EmailSubjectEnum.FORGOT_PASSWORD }), ttl: 120 });
+                throw new domain_Exception_1.ToManyRequestException("Too many failed attempts. Try again after 2 minutes.");
+            }
+            throw new domain_Exception_1.NotFoundException('user is not found');
+        }
+        user.phone = await (0, security_1.decrypt)(user.phone);
+        await this.cashService.del({ key: (0, email_1.userEmailTrialsKey)({ email, subject: enum_1.EmailSubjectEnum.FORGOT_PASSWORD }) });
+        return await this.tokenService.createLoginCredentials({ user, issuer });
     }
 }
 exports.Authentication = Authentication;

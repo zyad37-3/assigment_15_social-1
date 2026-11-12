@@ -4,6 +4,8 @@ import { responseFormatter } from "../../middleware";
 import { IResponse, IUser } from "../../common/interface";
 import { validation } from "../../middleware/validation.middleware";
 import * as validator from "./authentication.validation";
+import { getIssuer } from "../../common/utils";
+import { ILoginResponse } from "./entities/authentication.entities";
 
 const router = Router();
 
@@ -32,5 +34,12 @@ router.post("/resend_Confirm_Email",
  
 
 }))
+router.post("/login",
+    validation(validator.loginSchema),
+    responseFormatter(
+        async (req: Request, res: Response, next: NextFunction): Promise<IResponse<ILoginResponse>> => {
+            const data = await authService.login(req.validate.body,getIssuer(req))
+            return { status: 200, data }
+        }))
 
 export default router

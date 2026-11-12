@@ -157,6 +157,6 @@ exports.generalValidationFields = {
         mimetype: z.string(),
         buffer: z.instanceof(Buffer),
         size: z.number(),
-        path: z.string()
+        path: z.string().optional()
     })
 };

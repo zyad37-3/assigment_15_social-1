@@ -18,3 +18,5 @@ __exportStar(require("./user.enum"), exports);
 __exportStar(require("./security.tokenTypeEnum"), exports);
 __exportStar(require("./email.enum"), exports);
 __exportStar(require("./message.enum"), exports);
+__exportStar(require("./multer.Enum"), exports);
+__exportStar(require("./post.enum"), exports);
